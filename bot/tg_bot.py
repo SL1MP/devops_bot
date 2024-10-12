@@ -17,6 +17,9 @@ SSH_PORT = os.getenv('RM_PORT')
 SSH_USERNAME = os.getenv('RM_USERNAME')
 SSH_PASSWORD = os.getenv('RM_PASSWORD')
 
+RM_DB_USER = os.getenv('RM_DB_USER')
+RM_DB_PASSWORD = os.getenv('RM_DB_PASSWORD')
+
 DB_DATABASE = os.getenv('DB_DATABASE')
 DB_USER = os.getenv('DB_USER')
 DB_PASSWORD = os.getenv('DB_PASSWORD')  
@@ -235,9 +238,21 @@ def get_services(update: Update, context: CallbackContext) -> None:
     services_info = ssh_command("systemctl list-units --type=service --state=running")
     update.message.reply_text(f"Запущенные сервисы:\n{services_info}")
 
-def get_repl_logs(update: Update, context: CallbackContext) -> None:
-    repl_info = ssh_command("tail -n 1000 /var/log/postgresql/postgresql-12-main.log | grep -i repl")
-    update.message.reply_text(f"Запущенные сервисы:\n{repl_info}")
+def get_repl_logs(update: Update, context):
+    
+    ssh_client = paramiko.SSHClient()
+    ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+
+    try:
+        ssh_client.connect(hostname=DB_HOST, port=SSH_PORT, username=RM_DB_USER, password=RM_DB_PASSWORD)
+        stdin, stdout, stderr = ssh_client.exec_command(f'tail -n 1000 /var/log/postgresql/postgresql-12-main.log | grep -i repl')
+        data = stdout.read() + stderr.read()
+        data = str(data.decode('utf-8')).replace('\\n', '\n').replace('\\t', '\t')[:-1]
+        update.message.reply_text(data[-4000:])
+    except Exception as e:
+        update.message.reply_text(f"Ошибка при подключении к серверу: {str(e)}")
+    finally:
+        ssh_client.close()
 
 def connect_to_db():
     try:
