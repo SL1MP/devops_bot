@@ -252,7 +252,19 @@ def connect_to_db():
         return connection
     except psycopg2.Error as e:
         print("Ошибка подключения к базе данных:", e)
-
+def check_db_connection(update: Update, context: CallbackContext):
+    connection = None  # Инициализация переменной для подключения
+    try:
+        connection = connect_to_db()
+        if connection:
+            update.message.reply_text("Подключение к базе данных успешно.")
+        else:
+            update.message.reply_text("Ошибка подключения к базе данных.")
+    except psycopg2.Error as e:
+        update.message.reply_text(f"Ошибка подключения к базе данных: {str(e)}")
+    finally:
+        if connection:
+            connection.close()
 
 # Функция для получения списка email-адресов из базы данных
 def get_emails(update: Update, context):
@@ -401,6 +413,7 @@ def main():
     dp.add_handler(CommandHandler("get_emails", get_emails))
     dp.add_handler(CommandHandler("get_phone_numbers", get_phone_numbers))
     dp.add_handler(CommandHandler("echo", echo))
+    dp.add_handler(CommandHandler("check_db_connection", check_db_connection))
 	# Регистрируем обработчик текстовых сообщений
     dp.add_handler(MessageHandler(Filters.text & ~Filters.command, echo))
 		
