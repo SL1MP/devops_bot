@@ -236,7 +236,7 @@ def get_services(update: Update, context: CallbackContext) -> None:
     update.message.reply_text(f"Запущенные сервисы:\n{services_info}")
 
 def get_repl_logs(update: Update, context: CallbackContext) -> None:
-    repl_info = ssh_command("tail -n 1000 /var/log/postgresql/postgresql-16-main.log | grep -i repl")
+    repl_info = ssh_command("tail -n 1000 /var/log/postgresql/postgresql-12-main.log | grep -i repl")
     update.message.reply_text(f"Запущенные сервисы:\n{repl_info}")
 
 def connect_to_db():
