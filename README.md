@@ -6,7 +6,7 @@
 1. **Склонируйте репозиторий и перейдите в папку проекта:**
     ```bash
     git clone https://github.com/SL1MP/devops_bot.git -b docker
-    cd devops_tg_bot
+    cd devops_bot
     ```
 
 2. **Создайте и заполните `.env` файл.**
