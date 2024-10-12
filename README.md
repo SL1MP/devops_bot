@@ -5,7 +5,7 @@
 
 1. **Склонируйте репозиторий и перейдите в папку проекта:**
     ```bash
-    git clone https://github.com/DemeRTT/devops_tg_bot.git -b docker
+    git clone https://github.com/SL1MP/devops_bot.git -b docker
     cd devops_tg_bot
     ```
 
