@@ -4,8 +4,8 @@
 
 1. **Склонируйте репозиторий и перейдите в папку проекта:**
     ```bash
-    git clone https://github.com/DemeRTT/devops_tg_bot.git -b ansible
-    cd devops_tg_bot
+    git clone https://github.com/SL1MP/devops_bot.git -b ansible
+    cd devops_bot
     ```
 
 2. **Измените файл hosts:**
@@ -35,7 +35,7 @@ adduser ansible
 
 **P.s. возможно придётся создать и активировать виртуальное окружение для Python в Linux:**
 ```bash
-cd devops_tg_bot    
+cd devops_bot    
 ```
 
 ```bash
