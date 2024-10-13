@@ -2,34 +2,34 @@ all:
   vars:
     GIT: https://github.com/SL1MP/devops_bot.git
     WORKDIR: /root/ansible
-    RM_HOST: 192.168.0.103
+    RM_HOST: <ip машины, на которой развернётся бот>
     RM_PORT: 22
-    RM_USERNAME: vladimir
-    RM_PASSWORD: 123
-    RM_DB_USER: db
-    RM_DB_PASSWORD: 123
+    RM_USERNAME: <пользователь машины, на которой развернётся бот>
+    RM_PASSWORD: <пароль пользователя машины, на которой развернётся бот>
+    RM_DB_USER: <пользователь машины, на которой развернётся бд>
+    RM_DB_PASSWORD: <пароль пользователя машины, на которой развернётся бд>
     DB_DATABASE: db_bot
     DB_USER: postgres
     DB_PASSWORD: 123
-    DB_HOST: 192.168.0.107
+    DB_HOST: <ip машины, на которой развернется БД>
     DB_PORT: 5432
     DB_REPL_USER: repl_user
     DB_REPL_PASSWORD: 123
-    DB_REPL_HOST: 192.168.0.108
+    DB_REPL_HOST: <ip машины, на которую реплицируется БД>
     DB_REPL_PORT: 5433
     POSTGRES_VERSION: 12
     TOKEN: 7681456345:AAHqCYMD48fknskyc_fcgryWu_qsAK4ReYM
   hosts:
     host0:
-      ansible_host: 192.168.0.103
+      ansible_host: <ip машины, на которой развернётся бот>
       ansible_user: ansible
-      ansible_ssh_pass: 123
+      ansible_ssh_pass: <пароль от ansible на 0 хосте>
     host1:
-      ansible_host: 192.168.0.107 
+      ansible_host: <ip машины, на которой развернётся бд>
       ansible_user: ansible
-      ansible_ssh_pass: 123 
+      ansible_ssh_pass: <пароль от ansible на 1 хосте> 
     host2:
-      ansible_host: 192.168.0.108 
+      ansible_host: <ip машины, на которой развернётся репликация>
       ansible_user: ansible
-      ansible_ssh_pass: 123 
+      ansible_ssh_pass: <пароль от ansible на 2 хосте>
     
