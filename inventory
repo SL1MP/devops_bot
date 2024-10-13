@@ -1,0 +1,35 @@
+all:
+  vars:
+    GIT: https://github.com/SL1MP/devops_bot.git
+    WORKDIR: /root/ansible
+    RM_HOST: 192.168.0.103
+    RM_PORT: 22
+    RM_USERNAME: vladimir
+    RM_PASSWORD: 123
+    RM_DB_USER: db
+    RM_DB_PASSWORD: 123
+    DB_DATABASE: db_bot
+    DB_USER: postgres
+    DB_PASSWORD: 123
+    DB_HOST: 192.168.0.107
+    DB_PORT: 5432
+    DB_REPL_USER: repl_user
+    DB_REPL_PASSWORD: 123
+    DB_REPL_HOST: 192.168.0.108
+    DB_REPL_PORT: 5433
+    POSTGRES_VERSION: 12
+    TOKEN: 7681456345:AAHqCYMD48fknskyc_fcgryWu_qsAK4ReYM
+  hosts:
+    host0:
+      ansible_host: 192.168.0.103
+      ansible_user: ansible
+      ansible_ssh_pass: 123
+    host1:
+      ansible_host: 192.168.0.107 
+      ansible_user: ansible
+      ansible_ssh_pass: 123 
+    host2:
+      ansible_host: 192.168.0.108 
+      ansible_user: ansible
+      ansible_ssh_pass: 123 
+    
