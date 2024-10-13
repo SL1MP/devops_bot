@@ -68,6 +68,7 @@ def helpCommand(update: Update, context):
     /get_ps - Запущенные процессы 
     /get_ss - Используемые порты
     /get_apt_list - Установленные пакеты
+    /get_apt_list_search - Запрашивает пакет для поиска
     /get_services - Запущенные сервисы
     /get_repl_logs - Логи о репликации БД
     /get_phone_numbers - Телефонные номера из БД
