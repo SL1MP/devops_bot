@@ -1,41 +1,49 @@
-# devops_bot
-# Развертывание проекта с использованием контейнеров
+# Развертывание проекта с использованием Ansible
 
-Для развертывания проекта с помощью контейнеров выполните следующие шаги (выполнить с правами администратора):
+Для развертывания проекта с помощью Ansible выполните следующие шаги (выполнить с правами администратора):
 
 1. **Склонируйте репозиторий и перейдите в папку проекта:**
     ```bash
-    git clone https://github.com/SL1MP/devops_bot.git -b docker
-    cd devops_bot
+    git clone https://github.com/DemeRTT/devops_tg_bot.git -b ansible
+    cd devops_tg_bot
     ```
 
-2. **Создайте и заполните `.env` файл.**
-
-3. **Создайте образы Docker:**
+2. **Измените файл hosts:**
     ```bash
-    # Перейдите в папку bot и создайте образ
-    cd bot
-    docker build -t bot_image .
+    # Пропишите токен тг-бота, хосты, пользователей к хостам и их пароли
+    nano inventory
     ```
 
+3. **Запустите playbook:**
     ```bash
-    # Перейдите в папку db и создайте образ
-    cd ../db
-    docker build -t db_image .
+    ansible-playbook playbook_tg_bot.yml
     ```
+    
+**P.s. Для повышения безопасности лучше будет, если на удаленных хостах имеются пользователи ansible:**
+```bash
+# Для начала создайте пользователя 
+adduser ansible
+```
+    
+ ```bash
+ # Предоставьте созданному пользователю выполнять команды с повышенными привилегиями  
+ visudo
 
-    ```bash
-    # Перейдите в папку db_repl и создайте образ
-    cd ../db_repl
-    docker build -t db_repl_image .
-    ```
-4. **Добавьте вашего пользователя в группу docker:**
-    ```bash
-    usermod -aG docker <имя пользователя>
-    ```
+ # Внутри открывшегося файла sudoers необходимо внести строку
+ ansible ALL=(ALL:ALL) NOPASSWD:ALL
+ ```
 
-5. **Запустите контейнеры:**
-    ```bash
-    cd ..
-    docker compose up -d
-    ```
+**P.s. возможно придётся создать и активировать виртуальное окружение для Python в Linux:**
+```bash
+cd devops_tg_bot    
+```
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
+
+```bash
+# Далее выполняйте команду
+ansible-playbook playbook_tg_bot.yml
+```
