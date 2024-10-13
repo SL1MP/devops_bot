@@ -44,7 +44,33 @@ def start(update: Update, context):
     update.message.reply_text(f'Привет {user.full_name}!')
 
 def helpCommand(update: Update, context):
-    update.message.reply_text('Help!')
+    help_text = """
+    Список доступных команд:
+    /start - Начать взаимодействие с ботом
+    /help - Получить справку о доступных командах
+    /findPhoneNumbers - Найти телефонные номера в тексте
+    /findEmailAddr - Найти email-адреса в тексте
+    /verify_password - Проверить сложность пароля
+    
+    Список команд при удалённом подключении:
+    /get_release - Релиз системы
+    /get_uname - Архитектура процессора и версия ядра 
+    /get_uptime - Время работы
+    /get_df - Состояние файловой системы
+    /get_free - Состояние оперативной памяти 
+    /get_mpstat - Производительность системы
+    /get_w - Пользователи в системе
+    /get_auths - Последние 10 входов в систему
+    /get_critical - Последние 5 критических события
+    /get_ps - Запущенные процессы 
+    /get_ss - Используемые порты
+    /get_apt_list - Установленные пакеты
+    /get_services - Запущенные сервисы
+    /get_repl_logs - Логи о репликации БД
+    /get_phone_numbers - Телефонные номера из БД
+    /get_emails - Электронные почты из БД
+    """
+    update.message.reply_text(help_text)
 
 def findPhoneNumbersCommand(update: Update, context):
     update.message.reply_text('Введите текст для поиска телефонных номеров: ')
@@ -129,11 +155,6 @@ def verifyPassword(update: Update, context: CallbackContext):
         update.message.reply_text('Пароль простой.')
     
     return ConversationHandler.END
-
-# Функция для завершения диалога
-#def cancel(update: Update, context: CallbackContext):
-    #update.message.reply_text('Проверка отменена.')
-    #return ConversationHandler.END
 
 def ssh_command(command):
     try:
