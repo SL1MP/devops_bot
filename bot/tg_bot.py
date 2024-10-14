@@ -68,7 +68,6 @@ def helpCommand(update: Update, context):
     /get_ps - Запущенные процессы 
     /get_ss - Используемые порты
     /get_apt_list - Установленные пакеты
-    /get_apt_list_search - Запрашивает пакет для поиска
     /get_services - Запущенные сервисы
     /get_repl_logs - Логи о репликации БД
     /get_phone_numbers - Телефонные номера из БД
@@ -95,7 +94,7 @@ def findPhoneNumbers (update: Update, context):
 
     if not phoneNumberList: # Обрабатываем случай, когда номеров телефонов нет
         update.message.reply_text('Телефонные номера не найдены')
-        return # Завершаем выполнение функции
+        return ConversationHandler.END # Завершаем выполнение функции
     
     phoneNumbers = '' # Создаем строку, в которую будем записывать номера телефонов
     for i in range(len(phoneNumberList)):
@@ -123,7 +122,7 @@ def findEmailAddr (update: Update, context):
 
     if not emailAddrList: # Обрабатываем случай, когда Email-адресов нет
         update.message.reply_text('Email-адреса не найдены')
-        return  # Завершаем выполнение функции
+        return ConversationHandler.END # Завершаем выполнение функции
     
     emailAddr = '' # Создаем строку, в которую будем записывать Email-адреса
     for i in range(len(emailAddrList)):
@@ -239,13 +238,26 @@ def get_ss(update: Update, context: CallbackContext) -> None:
 
 # Команда /get_apt_list - информация об установленных пакетах (вариант 1: все пакеты)
 def get_apt_list(update: Update, context: CallbackContext) -> None:
-    apt_list = ssh_command("apt list --installed | head -n 20")
-    update.message.reply_text(f"Список установленных пакетов:\n{apt_list}")
+    update.message.reply_text("""Вывести все установленные пакеты или какой-то конкретный?
+                              1.Все пакеты
+                              2.Конкретный пакет
+                              
+                              !!!Введите 1 или 2!!!
+                              """)
+    return 'get_apt_list_command'
 
-# Команда /get_apt_list_search - запрашивает пакет для поиска (вариант 2: конкретный пакет)
-def get_apt_list_search(update: Update, context: CallbackContext) -> None:
-    update.message.reply_text("Введите название пакета для поиска:")
-    return 'search_package'
+def get_apt_list_command(update: Update, context: CallbackContext) -> None:
+    user_input = update.message.text
+    if user_input == '1':
+        apt_list = ssh_command("apt list --installed | head -n 20")
+        update.message.reply_text(f"Список установленных пакетов:\n{apt_list}")
+    elif user_input == '2': 
+        update.message.reply_text('Введите название пакета:')
+        return 'search_package'
+    
+    else:
+        update.message.reply_text('Неправильный ввод варианта!')
+        return ConversationHandler.END
 
 # Поиск конкретного пакета
 def search_package(update: Update, context: CallbackContext) -> None:
@@ -408,11 +420,12 @@ def main():
 
     # Обработчик диалога
     convHandlerFindPhoneNumbers = ConversationHandler(
-        entry_points=[CommandHandler('findPhoneNumbers', findPhoneNumbersCommand), CommandHandler('findEmailAddr', findEmailAddrCommand), CommandHandler('verify_password', verifyPasswordCommand), CommandHandler('get_apt_list_search', get_apt_list_search)],
+        entry_points=[CommandHandler('findPhoneNumbers', findPhoneNumbersCommand), CommandHandler('findEmailAddr', findEmailAddrCommand), CommandHandler('verify_password', verifyPasswordCommand), CommandHandler('get_apt_list', get_apt_list)],
         states={
             'findPhoneNumbers': [MessageHandler(Filters.text & ~Filters.command, findPhoneNumbers)],
             'findEmailAddr': [MessageHandler(Filters.text & ~Filters.command, findEmailAddr)],
             PASSWORD_CHECK : [MessageHandler(Filters.text & ~Filters.command, verifyPassword)],
+	    'get_apt_list_command': [MessageHandler(Filters.text & ~Filters.command, get_apt_list_command)],
             'search_package': [MessageHandler(Filters.text & ~Filters.command, search_package)],
             'save_phone_number_to_db': [MessageHandler(Filters.text & ~Filters.command, save_phone_number_to_db)],
             'save_email_to_db': [MessageHandler(Filters.text & ~Filters.command, save_email_to_db)],
