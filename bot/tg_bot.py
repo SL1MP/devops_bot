@@ -96,7 +96,7 @@ def findPhoneNumbers (update: Update, context):
         
     update.message.reply_text(phoneNumbers) # Отправляем сообщение пользователю
     
-    update.message.reply_text("Записать найденные телефонные номера в базу данных?")
+    update.message.reply_text("Записать найденные телефонные номера в базу данных?(да или нет)")
     return 'save_phone_number_to_db'
 
 def findEmailAddrCommand(update: Update, context):
@@ -124,7 +124,7 @@ def findEmailAddr (update: Update, context):
     update.message.reply_text('Найденные Email-адреса: ')    
     update.message.reply_text(emailAddr) # Отправляем сообщение пользователю
     
-    update.message.reply_text("Записать найденные Email-адреса в базу данных?")
+    update.message.reply_text("Записать найденные Email-адреса в базу данных?(да или нет)")
     return 'save_email_to_db'
 
 # Регулярное выражение для проверки сложности пароля
